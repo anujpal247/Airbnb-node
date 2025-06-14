@@ -53,7 +53,7 @@ Hotel.init(
     },
   },
   {
-    tableName: "Hotel",
+    tableName: 'Hotel',
     sequelize,
     timestamps: true, // adds createdAt , updatedAt
     underscored: true, // createdAt --> created_at

@@ -31,3 +31,27 @@ export async function getHotelByIdController(
     data: hotel,
   });
 }
+
+export async function getAllHotelController(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  res.status(501);
+}
+
+export async function deleteHotelController(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  res.status(501);
+}
+
+export async function updateHotelController(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  res.status(501);
+}
