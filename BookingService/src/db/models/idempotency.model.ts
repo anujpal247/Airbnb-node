@@ -42,6 +42,7 @@ IdempotencyKey.init(
     tableName: "idempotencyKeys",
     timestamps: true,
     underscored: true,
+    // version: true, // enables Optimistic locking
   }
 );
 

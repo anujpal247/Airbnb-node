@@ -1,10 +1,11 @@
+import sequelize from "../db/models/sequelize";
 import { createBookingDTO } from "../dto/booking.dto";
 import {
   confirmBooking,
   createBooking,
   createIdempotencyKey,
   finalizeIdempotencyKey,
-  getIdempotencyKey,
+  getIdempotencyKeyWithLock,
 } from "../repositories/booking.repository";
 import { BadRequestError, NotFoundError } from "../utils/errors/app.error";
 import { generateIdempotencyKey } from "../utils/helpers/generateIdempotencyKey";
@@ -22,20 +23,25 @@ export async function createBookingService(bookingData: createBookingDTO) {
 }
 
 export async function confirmBookingService(idempotencyKey: string) {
-  const idempotencyKeyData = await getIdempotencyKey(idempotencyKey);
+  return await sequelize.transaction(async (txn) => {
+    const idempotencyKeyData = await getIdempotencyKeyWithLock(
+      txn,
+      idempotencyKey
+    );
 
-  if (!idempotencyKeyData) {
-    throw new NotFoundError(`Idempotency key not found`);
-  }
+    if (!idempotencyKeyData) {
+      throw new NotFoundError(`Idempotency key not found`);
+    }
 
-  if (idempotencyKeyData.finalized) {
-    throw new BadRequestError(`Idempotency key already finalized`);
-  }
+    if (idempotencyKeyData.finalized) {
+      throw new BadRequestError(`Idempotency key already finalized`);
+    }
 
-  // check payments here
+    // check payments here
 
-  const booking = await confirmBooking(idempotencyKeyData.bookingId);
-  await finalizeIdempotencyKey(idempotencyKey);
+    const booking = await confirmBooking(txn, idempotencyKeyData.bookingId);
+    await finalizeIdempotencyKey(txn, idempotencyKey);
 
-  return booking;
+    return booking;
+  });
 }
