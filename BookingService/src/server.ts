@@ -8,6 +8,7 @@ import {
 } from "./middlewares/error.middleware";
 import logger from "./config/logger.config";
 import { attachCorrelationIdMiddleware } from "./middlewares/correlation.middleware";
+import { addEmailToQueue } from "./producers/email.producer";
 // import { redisClient } from "./config/redis.config";
 const app = express();
 
@@ -36,4 +37,16 @@ app.listen(serverConfig.PORT, async () => {
 
   // const res = await redisClient.get("name");
   // console.log(res);
+
+  for (let i = 0; i < 10; i++) {
+    addEmailToQueue({
+      to: `sample from booking ${i}`,
+      subject: "Sample Email booking",
+      templateId: "sample-template",
+      params: {
+        name: "John Doe",
+        orderId: "12345",
+      },
+    });
+  }
 });
