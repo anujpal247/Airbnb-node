@@ -40,12 +40,12 @@ app.listen(serverConfig.PORT, async () => {
 
   for (let i = 0; i < 10; i++) {
     addEmailToQueue({
-      to: `sample from booking ${i}`,
-      subject: "Sample Email booking",
-      templateId: "sample-template",
+      to: "ag141020@gmail.com",
+      subject: `Welcome message ${i}`,
+      templateId: "welcome",
       params: {
-        name: "John Doe",
-        orderId: "12345",
+        name: "Gupta Jii",
+        appname: "Booking App",
       },
     });
   }

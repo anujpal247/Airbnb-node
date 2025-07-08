@@ -4,6 +4,9 @@ import { getRedisConnObj } from "../config/redis.config";
 import { NotificationDto } from "../dto/notification.dto";
 import { MAILER_QUEUE } from "../queues/email.queue";
 import { MAILER_PAYLOAD } from "../producers/email.producer";
+import { renderMailTemplate } from "../templates/handler";
+import { sendEmail } from "../services/mailer.service";
+import logger from "../config/logger.config";
 
 export const setupMailerWorker = () => {
   const mailWorker = new Worker<NotificationDto>(
@@ -16,6 +19,17 @@ export const setupMailerWorker = () => {
 
       const payload = job.data;
       console.log(`processing email for ${JSON.stringify(payload)}`);
+
+      const emailContent = await renderMailTemplate(
+        payload.templateId,
+        payload.params
+      );
+
+      await sendEmail(payload.to, payload.subject, emailContent);
+
+      logger.info(
+        `Email sent to ${payload.to} with subject ${payload.subject}`
+      );
     },
     {
       connection: getRedisConnObj(),

@@ -38,12 +38,12 @@ app.listen(serverConfig.PORT, () => {
   logger.info(`Mailer worker setup completed.`);
 
   const sampleNotitication: NotificationDto = {
-    to: "sample",
-    subject: "Sample Email",
-    templateId: "sample-template",
+    to: "imanuj7755@gmail.com",
+    subject: "Sample Email Noti service",
+    templateId: "welcome",
     params: {
       name: "John Doe",
-      orderId: "12345",
+      appname: "Booking App",
     },
   };
 
