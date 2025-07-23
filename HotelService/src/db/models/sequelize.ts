@@ -1,12 +1,13 @@
 import { Sequelize } from "sequelize";
-import { databaseConfig } from "../../config";
+import { serverConfig } from "../../config";
 
 const sequelize = new Sequelize({
-  host: databaseConfig.HOST,
-  port: databaseConfig.PORT,
-  username: databaseConfig.USERNAME,
-  password: databaseConfig.PASSWORD,
-  dialect: "postgres",
+  host: serverConfig.DB_HOST,
+  port: serverConfig.DB_PORT,
+  username: serverConfig.DB_USER,
+  password: serverConfig.DB_PASSWORD,
+  database: serverConfig.DB_NAME,
+  dialect: "mysql",
 });
 
 export default sequelize;

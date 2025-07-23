@@ -1,7 +1,11 @@
 import { Request, Response, NextFunction } from "express";
+import { StatusCodes } from "http-status-codes";
 import {
   createHotelService,
+  deleteHotelService,
+  getAllHotelService,
   getHotelByIdService,
+  updateHotelService,
 } from "../services/hotel.service";
 
 export async function createHotelController(
@@ -11,7 +15,7 @@ export async function createHotelController(
 ) {
   const hotel = await createHotelService(req.body);
 
-  res.status(201).json({
+  res.status(StatusCodes.CREATED).json({
     success: true,
     message: "Hotel created successfully",
     data: hotel,
@@ -23,9 +27,9 @@ export async function getHotelByIdController(
   res: Response,
   next: NextFunction
 ) {
-  const hotel = await getHotelByIdService(Number(req.params));
+  const hotel = await getHotelByIdService(Number(req.params.id));
 
-  res.status(200).json({
+  res.status(StatusCodes.OK).json({
     success: true,
     message: "Hotel found successfully",
     data: hotel,
@@ -37,7 +41,12 @@ export async function getAllHotelController(
   res: Response,
   next: NextFunction
 ) {
-  res.status(501);
+  const hotels = await getAllHotelService();
+  res.status(StatusCodes.OK).json({
+    success: true,
+    message: "Hotels found successfully",
+    data: hotels,
+  });
 }
 
 export async function deleteHotelController(
@@ -45,7 +54,12 @@ export async function deleteHotelController(
   res: Response,
   next: NextFunction
 ) {
-  res.status(501);
+  const response = await deleteHotelService(Number(req.params.id));
+  res.status(StatusCodes.OK).json({
+    success: true,
+    message: "Hotel deleted successfully",
+    data: response,
+  });
 }
 
 export async function updateHotelController(
@@ -53,5 +67,10 @@ export async function updateHotelController(
   res: Response,
   next: NextFunction
 ) {
-  res.status(501);
+  const hotel = await updateHotelService(Number(req.params.id), req.body);
+  res.status(StatusCodes.OK).json({
+    success: true,
+    message: "Hotel updated successfully",
+    data: hotel,
+  });
 }
