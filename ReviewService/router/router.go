@@ -1,7 +1,7 @@
 package router
 
 import (
-	"net/http"
+	"ReviewService/controllers"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
@@ -16,9 +16,7 @@ func SetupRouter() *chi.Mux {
 	// buit-in middleware for logging requests
 	chiRouter.Use(middleware.Logger)
 
-	chiRouter.Get("/ping", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("pong"))
-	})
+	chiRouter.Get("/ping", controllers.PingController)
 
 	return chiRouter
 }

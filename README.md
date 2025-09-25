@@ -163,15 +163,13 @@ cd auth-service && go run main.go
 ## 📂 Project Structure (example)
 
 ```
-/hotel-booking-backend
-   /hotel-service
-   /booking-service
-   /notification-service
-   /auth-service
-   /review-service
-   /gateway
-   docker-compose.yml
+/hotel-booking backend
+   /HotelService
+   /BookingService
+   /NotificationService
+   /ReviewService
    README.md
+   
 ```
 
 ---

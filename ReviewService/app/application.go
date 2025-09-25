@@ -1,6 +1,7 @@
 package app
 
 import (
+	"ReviewService/config/db"
 	"ReviewService/router"
 	"fmt"
 	"net/http"
@@ -28,6 +29,8 @@ func NewApplication(config Config) *Application {
 }
 
 func (a *Application) Run() error {
+	db.SetupDB() // TODO handle error and use db instance
+
 	server := &http.Server{
 		Addr:         a.Config.Addr,
 		Handler:      router.SetupRouter(), // TODO add handler
